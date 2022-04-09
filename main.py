@@ -21,7 +21,16 @@ for shortcut in list_of_shortcuts:
             try:
                 folder = re.search(r'-(.*?)-', shortcut).group(1)
                 shutil.move(shortcut,folder)
-                print(f'Moved {shortcut} to {folder}')
+                if bool(re.search(r'-(.*?)_', shortcut)):
+                    os.chdir(folder)
+                    subFolder = re.search(r'-(.*?)_', shortcut).group(1)
+                    splitFile = subFolder.split('-')
+                    shutil.move(shortcut,splitFile[1])
+                    print(f'Moved {shortcut} to {folder}/{splitFile[1]}')
+                    os.chdir(desktop)
+                else:
+                    print(f'Moved {shortcut} to {folder}')
+
             except AttributeError:
                 print(f"File: \"{shortcut}\" is formatted wrong")
 
